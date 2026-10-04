@@ -11,6 +11,11 @@ Set up Mailflare in three steps:
 3. **Connect your domain:** add a domain managed by the same Cloudflare account and choose which service receives its mail. Mailflare configures email routing and, when available and selected, email sending before helping you create the first mailbox. Resend and Amazon SES are alternatives to Cloudflare for receiving and sending; see [Sending and receiving providers](providers.md).
 
 
+## Self-hosted Unlimited
+
+This fork keeps Mailflare's upstream entitlement boundary for update compatibility, but resolves it locally with the maximum feature set. No commercial license key or external license validation service is used. Authentication, administrator roles, and explicit per-account permissions remain enforced.
+
+
 ## Step 1: Setup CF_TOKEN
 To configure your `CF_TOKEN` (which is a scoped Cloudflare API Token with specific permissions), follow the below steps.
 
@@ -104,7 +109,7 @@ The assistant panel no longer exposes MCP key management. External MCP clients c
 
 ## Updating Mailflare
 
-The **Update Mailflare** button in the admin dashboard dispatches `.github/workflows/deploy-update.yml` in the installation repository. The workflow replaces the installation branch's complete tracked tree with the latest upstream source, commits that replacement, and pushes it. This avoids merge conflicts between independently created installation and upstream histories. Target-only committed files and code changes are intentionally removed; repository variables, secrets, and other GitHub or Cloudflare configuration remain unchanged. A connected Cloudflare Git integration then builds and deploys the change.
+The **Update Mailflare** button in the admin dashboard dispatches `.github/workflows/deploy-update.yml` in the installation repository. The workflow replaces the installation branch's complete tracked tree with the latest fork source, commits that replacement, and pushes it. This avoids merge conflicts between independently created installation and source histories. Target-only committed files and code changes are intentionally removed; repository variables, secrets, and other GitHub or Cloudflare configuration remain unchanged. A connected Cloudflare Git integration then builds and deploys the change.
 
 ### Auto update
 
@@ -113,7 +118,7 @@ Create a fine-grained personal access token for the installation repository with
 | Permission | Access | Used for |
 | --- | --- | --- |
 | Actions | Read and write | Dispatching `deploy-update.yml` from the Mailflare admin dashboard |
-| Contents | Read and write | Committing and pushing the upstream source into the installation repository |
+| Contents | Read and write | Committing and pushing the fork source into the installation repository |
 | Workflows | Read and write | Replacing files inside `.github/workflows` during an update |
 
 Configure the token and repository details in both Cloudflare and GitHub:

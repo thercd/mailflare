@@ -3,10 +3,10 @@ import { getDb } from "@/db";
 import { createUserAccountSchema } from "@/lib/validators";
 import { canManageUsers, isPrimaryAdmin } from "@/lib/auth/admin";
 import { createAccountResponse } from "./create";
-import { accountListItemFromUser, listAccountsForAdmin, requireAccountsAdmin } from "./utils";
+import { accountListItemFromUser, listAccountsForAdmin, requireTeamAdmin } from "./utils";
 
 export async function GET(request: Request) {
-	const access = await requireAccountsAdmin(request);
+	const access = await requireTeamAdmin(request);
 	if (access.error) return access.error;
 	const rows = await listAccountsForAdmin(getDb(access.env));
 	return NextResponse.json({
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-	const access = await requireAccountsAdmin(request);
+	const access = await requireTeamAdmin(request);
 	if (access.error) return access.error;
 	const parsed = createUserAccountSchema.safeParse(await request.json().catch(() => null));
 	if (!parsed.success) {

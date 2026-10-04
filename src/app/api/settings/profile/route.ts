@@ -5,6 +5,7 @@ import { getEnv } from "@/lib/cloudflare";
 import { getDb } from "@/db";
 import { users } from "@/db/schema";
 import { requireUser } from "@/lib/auth/cookies";
+import { getLicenseEntitlements } from "@/lib/licenses/service";
 import { syncPersonalIdentity } from "@/lib/profile/sync";
 import type { UpdateProfileInput } from "./types";
 import { parseUpdateProfileRequest } from "./utils";
@@ -23,7 +24,10 @@ export async function PATCH(request: Request) {
 	}
 
 	const db = getDb(env);
-	const canForwardEmail = true;
+	const canForwardEmail = (await getLicenseEntitlements(env)).canForwardEmail;
+	if (!canForwardEmail && parsed.forwardingEmail && parsed.forwardingEmail !== user.forwardingEmail) {
+		return NextResponse.json({ error: "A Pro or Team license is required for email forwarding" }, { status: 403 });
+	}
 	const forwardingEmail = parsed.forwardingEmail === undefined ? user.forwardingEmail : parsed.forwardingEmail;
 	await syncPersonalIdentity(db, {
 		userId: user.id,

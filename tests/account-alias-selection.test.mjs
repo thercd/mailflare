@@ -230,10 +230,11 @@ for (const enabled of [true, false]) {
 	});
 }
 
-test("account creation still enforces admin authorization", async (t) => {
+test("account creation uses local entitlements and still enforces authorization", async (t) => {
 	const f = await fixture(t);
 	assert.equal((await f.post("api", {}, "invalid-test-key")).status, 401);
 	assert.equal((await f.post("dashboard", {}, "invalid-test-session")).status, 403);
+	assert.equal(f.database.db.prepare("SELECT count(*) AS count FROM license_settings").get().count, 0);
 	assert.equal(f.calls.length, 0);
 });
 

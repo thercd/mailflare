@@ -4,7 +4,7 @@
 
 Mailflare is a self-hosted email inbox for custom domains, built on Cloudflare. Supports **Resend**, or **AWS SES**
 
-> **Fork notice (2026-10-04):** This is a modified AGPL-3.0 fork. Plan-based feature gates and commercial license activation were removed; every self-hosted feature is available. User roles and explicit per-account permissions remain enforced.
+> **Fork notice (2026-10-04):** This is a modified AGPL-3.0 fork. It preserves the upstream entitlement API but resolves it locally as **Self-hosted Unlimited**, so every feature is available without a commercial key or external license validation. User roles and explicit per-account permissions remain enforced.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/thercd/mailflare)
 
