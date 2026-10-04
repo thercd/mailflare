@@ -4,7 +4,9 @@
 
 Mailflare is a self-hosted email inbox for custom domains, built on Cloudflare. Supports **Resend**, or **AWS SES**
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/hieunc229/mailflare)
+> **Fork notice (2026-10-04):** This is a modified AGPL-3.0 fork. Plan-based feature gates and commercial license activation were removed; every self-hosted feature is available. User roles and explicit per-account permissions remain enforced.
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/thercd/mailflare)
 
 ## Screenshots
 
@@ -81,7 +83,7 @@ Paste the prompt below into an agent with terminal access. Give it your Cloudfla
 - **Runtime token** (stored as the Worker secret `CF_TOKEN`): use the domain permissions above. Add **Email Sending Edit** to send mail. It must cover the zones you will connect in Mailflare.
 
 ```text
-Install Mailflare from https://github.com/hieunc229/mailflare in my Cloudflare account.
+Install Mailflare from https://github.com/thercd/mailflare in my Cloudflare account.
 Ask me for my Cloudflare account ID, a scoped deployment API token, and a separate
 runtime CF_TOKEN through a secret input. Never print, commit, or place either token
 in a command argument or a tracked file. Use the deployment token only for Wrangler

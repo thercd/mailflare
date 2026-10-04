@@ -107,7 +107,7 @@ export default function AccountPermissionsPage() {
 				</Select>
 				<p className="text-xs text-neutral-500">
 					{account?.canChangeRole
-						? "Admins can access administration pages and manage Team settings."
+						? "Admins can access administration pages and manage installation settings."
 						: "Only the primary admin can change roles."}
 				</p>
 			</section>

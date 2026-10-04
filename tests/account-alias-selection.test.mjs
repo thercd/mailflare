@@ -48,16 +48,14 @@ async function fixture(t, { rules = [], failAddress, slowAddress } = {}) {
 	t.after(() => database.db.close());
 	await applyMigrations(database, join(root, "drizzle/migrations"));
 	database.db.exec(`
-		INSERT INTO users (id, email, password_hash, name, role, created_at) VALUES
-			('admin', 'owner@one.test', 'hash', 'Owner', 'admin', 1),
-			('other', 'owner@foreign.test', 'hash', 'Other', 'admin', 1);
+		INSERT INTO users (id, email, password_hash, name, role, is_primary_admin, created_at) VALUES
+			('admin', 'owner@one.test', 'hash', 'Owner', 'admin', 1, 1),
+			('other', 'owner@foreign.test', 'hash', 'Other', 'admin', 0, 1);
 		INSERT INTO domains (id, user_id, hostname, zone_id, status, created_at) VALUES
 			('one', 'admin', 'one.test', 'zone-one', 'active', 1),
 			('two', 'admin', 'two.test', 'zone-two', 'active', 1),
 			('pending', 'admin', 'pending.test', 'zone-pending', 'pending', 1),
 			('foreign', 'other', 'foreign.test', 'zone-foreign', 'active', 1);
-		INSERT INTO license_settings (id, instance_id, plan, state, features, updated_at)
-			VALUES ('default', 'test-instance', 'team', 'active', '[]', 1);
 	`);
 	database.db.prepare("INSERT INTO api_keys (id, user_id, name, prefix, key_hash, scopes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
 		.run("key", "admin", "Test", key.prefix, key.hash, '["accounts"]', 1);
@@ -232,13 +230,10 @@ for (const enabled of [true, false]) {
 	});
 }
 
-test("account creation still enforces admin authorization and the Team license", async (t) => {
+test("account creation still enforces admin authorization", async (t) => {
 	const f = await fixture(t);
 	assert.equal((await f.post("api", {}, "invalid-test-key")).status, 401);
 	assert.equal((await f.post("dashboard", {}, "invalid-test-session")).status, 403);
-	f.database.db.exec("UPDATE license_settings SET state = 'inactive'");
-	assert.equal((await f.post("api")).status, 403);
-	assert.equal((await f.post("dashboard")).status, 403);
 	assert.equal(f.calls.length, 0);
 });
 

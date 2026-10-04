@@ -661,6 +661,8 @@ export const appSettings = sqliteTable("app_settings", {
 		.$defaultFn(() => new Date()),
 });
 
+// Retained only so databases and backups made by upstream releases remain compatible.
+// Runtime feature access does not consult this legacy table.
 export const licenseSettings = sqliteTable("license_settings", {
 	id: text("id").primaryKey(),
 	instanceId: text("instance_id").notNull().unique(),

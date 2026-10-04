@@ -10,7 +10,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     env:
-      UPDATE_SOURCE_REPOSITORY: ${{ vars.UPDATE_SOURCE_REPOSITORY || 'hieunc229/mailflare' }}
+      UPDATE_SOURCE_REPOSITORY: ${{ vars.UPDATE_SOURCE_REPOSITORY || 'thercd/mailflare' }}
 
     steps:
       - name: Check update token
@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.MAILFLARE_UPDATE_TOKEN }}
 
-      - name: Replace repository with upstream source
+      - name: Replace repository with fork source
         run: |
           set -euo pipefail
           git config user.name "mailflare-update"
